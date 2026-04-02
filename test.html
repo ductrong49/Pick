@@ -9,14 +9,14 @@
   body{
     margin:0;
     font-family:Arial, sans-serif;
-    background:url("image6.png") center/cover no-repeat fixed;
+    background:url("image6.jpg") center/cover no-repeat fixed;
     text-align:center;
     padding:20px;
   }
 
   /* KHUNG TIÊU ĐỀ */
   .title-box{
-    background: rgba(128,128,128,0.8); /* xám mờ 50% */
+    background: rgba(128,128,128,0.8);
     border-radius:15px;
     padding:20px 15px;
     display:inline-block;
@@ -34,23 +34,22 @@
     font-size: clamp(18px, 4vw, 40px);
   }
 
+  /* GRID 2 CỘT LUÔN NGANG */
   .container{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    max-width:1000px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:15px;
+    max-width:600px;
     margin:auto;
-    gap:20px;
   }
 
   .item{
-    flex:1;
     text-align:center;
   }
 
   .item img{
     width:100%;
-    max-width:300px;
+    max-width:180px;
     cursor:pointer;
     transition: transform 0.3s;
   }
@@ -61,23 +60,17 @@
 
   .label{
     margin-top:10px;
-    font-size: clamp(14px, 2vw, 22px);
+    font-size: clamp(14px, 2.5vw, 20px);
     font-weight:bold;
     color:white;
     text-shadow:1px 1px 3px #000;
-  }
-
-  @media(max-width:768px){
-    .container{
-      flex-direction:column;
-    }
   }
 </style>
 
 </head>
 <body>
 
-<!-- TIÊU ĐỀ CÓ NỀN -->
+<!-- TIÊU ĐỀ -->
 <div class="title-box">
   <div class="title">
     <div>DERBY ĐỨC TRỌNG - ĐƠN DƯƠNG</div>
@@ -86,7 +79,7 @@
   </div>
 </div>
 
-<!-- 2 HÌNH -->
+<!-- 2 HÌNH LUÔN NGANG -->
 <div class="container">
 
   <div class="item">
