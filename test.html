@@ -29,7 +29,6 @@
     text-shadow:2px 2px 4px #000;
   }
 
-  /* LINK BAR THÊM MỚI */
   .link-bar{
     text-align:left;
     margin:0 0 12px 0;
@@ -182,6 +181,10 @@ async function loadOtherSheets(){
 
   const datack = await loadSheetPromise("ck","A2:C4");
   document.getElementById('sheet-ck').innerHTML = tableToHTML(datack, "ck");
+
+  /* THÊM SODO */
+  const datasodo = await loadSheetPromise("sodo","A1:H21");
+  document.getElementById('sheet-sodo').innerHTML = tableToHTML(datasodo, "sodo");
 }
 
 async function reloadAllOrdered(){
@@ -202,7 +205,6 @@ google.charts.setOnLoadCallback(()=>{
 <h2 class="title">PICKLEBALL CUP</h2>
 <h2 class="title">04/04/2026</h2>
 
-<!-- LINK MỚI -->
 <div class="link-bar">
   <a href="https://www.google.com" target="_blank">Google</a>
   <a href="https://tuoitre.vn" target="_blank">Tuổi Trẻ</a>
@@ -231,6 +233,12 @@ google.charts.setOnLoadCallback(()=>{
 <div class="block">
   <div class="section-title">CHUNG KẾT</div>
   <div id="sheet-ck"></div>
+</div>
+
+<!-- SODO -->
+<div class="block">
+  <div class="section-title">SƠ ĐỒ</div>
+  <div id="sheet-sodo"></div>
 </div>
 
 </body>
