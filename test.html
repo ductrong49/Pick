@@ -1,1051 +1,142 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng Điểm Pickleball</title>
-    <link href="https://cdn.jsdelivr.net/npm/fontsource-inter@5.1.0/latin.css" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --primary: #1a73e8;
-            --primary-dark: #1557b0;
-            --accent: #f59e0b;
-            --accent-dark: #d97706;
-            --bg: #0f172a;
-            --bg-card: #1e293b;
-            --bg-card-hover: #253349;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --green: #22c55e;
-            --red: #ef4444;
-            --gold: #ffd700;
-            --silver: #c0c0c0;
-            --bronze: #cd7f32;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .bg-pattern {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(ellipse at 20% 50%, rgba(26, 115, 232, 0.08) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 20%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 80%, rgba(34, 197, 94, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 30px 0 20px;
-            position: relative;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 8px;
-        }
-
-        .logo-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3);
-            animation: pulse-glow 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 4px 20px rgba(245, 158, 11, 0.3); }
-            50% { box-shadow: 0 4px 30px rgba(245, 158, 11, 0.5); }
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-top: 4px;
-        }
-
-        .last-updated {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--green);
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-            border: 1px solid rgba(34, 197, 94, 0.2);
-        }
-
-        .last-updated .dot {
-            width: 7px;
-            height: 7px;
-            background: var(--green);
-            border-radius: 50%;
-            animation: blink 1.5s ease-in-out infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* Tabs */
-        .tabs-wrapper {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(20px);
-            padding: 12px 0 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .tabs {
-            display: flex;
-            gap: 4px;
-            overflow-x: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding-bottom: 0;
-        }
-
-        .tabs::-webkit-scrollbar { display: none; }
-
-        .tab {
-            padding: 10px 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            white-space: nowrap;
-            border-radius: 10px 10px 0 0;
-            transition: all 0.3s ease;
-            position: relative;
-            letter-spacing: 0.3px;
-        }
-
-        .tab:hover {
-            color: var(--text);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .tab.active {
-            color: var(--accent);
-            background: var(--bg-card);
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--accent);
-            border-radius: 3px 3px 0 0;
-        }
-
-        .tab .badge {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            font-size: 0.65rem;
-            padding: 1px 6px;
-            border-radius: 10px;
-            margin-left: 6px;
-            vertical-align: middle;
-        }
-
-        /* Content */
-        .content-area {
-            padding: 20px 0 40px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .section-title h2 {
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
-
-        .section-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        /* Tables */
-        .table-container {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-            margin-bottom: 24px;
-            animation: fadeInUp 0.4s ease;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        thead th {
-            background: rgba(26, 115, 232, 0.15);
-            padding: 14px 18px;
-            text-align: left;
-            font-size: 0.78rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
-
-        tbody td {
-            padding: 12px 18px;
-            font-size: 0.9rem;
-            border-bottom: 1px solid rgba(51, 65, 85, 0.5);
-            transition: background 0.2s;
-        }
-
-        tbody tr:hover td {
-            background: var(--bg-card-hover);
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .rank-cell {
-            font-weight: 800;
-            font-size: 1rem;
-            width: 50px;
-            text-align: center;
-        }
-
-        .rank-1 { color: var(--gold); }
-        .rank-2 { color: var(--silver); }
-        .rank-3 { color: var(--bronze); }
-
-        .team-name {
-            font-weight: 600;
-            color: #fff;
-        }
-
-        .points-cell {
-            font-weight: 700;
-            color: var(--accent);
-            font-size: 1rem;
-            text-align: center;
-            min-width: 80px;
-        }
-
-        .coef-cell {
-            text-align: center;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        /* Bracket styles */
-        .bracket-container {
-            display: flex;
-            gap: 30px;
-            overflow-x: auto;
-            padding: 10px 0 20px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
-        }
-
-        .bracket-round {
-            flex-shrink: 0;
-            min-width: 280px;
-            max-width: 340px;
-            width: 100%;
-        }
-
-        .bracket-round-title {
-            text-align: center;
-            font-size: 0.85rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
-            margin-bottom: 16px;
-            padding: 8px;
-            background: rgba(245, 158, 11, 0.08);
-            border-radius: 8px;
-        }
-
-        .bracket-match {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        .bracket-match:hover {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(26, 115, 232, 0.15);
-        }
-
-        .bracket-team {
-            display: flex;
-            align-items: center;
-            padding: 10px 16px;
-            gap: 10px;
-            transition: background 0.2s;
-            border-bottom: 1px solid rgba(51, 65, 85, 0.3);
-        }
-
-        .bracket-team:last-child {
-            border-bottom: none;
-        }
-
-        .bracket-team.winner {
-            background: rgba(34, 197, 94, 0.08);
-        }
-
-        .bracket-team.winner .bracket-name {
-            color: var(--green);
-            font-weight: 700;
-        }
-
-        .bracket-team .bracket-seed {
-            width: 24px;
-            height: 24px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .bracket-name {
-            flex: 1;
-            font-size: 0.88rem;
-            color: var(--text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .bracket-score {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--accent);
-            min-width: 30px;
-            text-align: center;
-        }
-
-        .bracket-match-label {
-            text-align: center;
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            padding: 4px;
-            background: rgba(0,0,0,0.2);
-            letter-spacing: 0.5px;
-        }
-
-        /* Grid layout for group tables */
-        .groups-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-        }
-
-        .group-card {
-            background: var(--bg-card);
-            border-radius: 16px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
-            animation: fadeInUp 0.4s ease;
-        }
-
-        .group-card-header {
-            background: linear-gradient(135deg, rgba(26, 115, 232, 0.2), rgba(26, 115, 232, 0.05));
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .group-card-header h3 {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #fff;
-        }
-
-        .group-badge {
-            background: var(--primary);
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 6px;
-        }
-
-        /* Loading */
-        .loading-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 80px 20px;
-            gap: 20px;
-        }
-
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 4px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .loading-text {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        .error-container {
-            text-align: center;
-            padding: 60px 20px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        .error-container .error-icon {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .error-container h3 {
-            color: var(--red);
-            margin-bottom: 8px;
-        }
-
-        .error-container p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-
-        .retry-btn {
-            margin-top: 16px;
-            padding: 10px 24px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-family: inherit;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .retry-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            h1 { font-size: 1.6rem; }
-            .container { padding: 12px; }
-            .tab { padding: 8px 14px; font-size: 0.8rem; }
-            .groups-grid { grid-template-columns: 1fr; }
-            .bracket-container { gap: 16px; }
-            .bracket-round { min-width: 260px; }
-            thead th, tbody td { padding: 10px 12px; font-size: 0.82rem; }
-        }
-
-        @media (max-width: 480px) {
-            h1 { font-size: 1.3rem; }
-            .logo-icon { width: 45px; height: 45px; font-size: 22px; }
-            .tab { padding: 7px 10px; font-size: 0.75rem; }
-        }
-
-        .hidden { display: none !important; }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
-
-        .refresh-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(26, 115, 232, 0.4);
-            transition: all 0.3s;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 25px rgba(26, 115, 232, 0.5);
-        }
-
-        .refresh-btn:active {
-            transform: scale(0.95);
-        }
-
-        .refresh-btn.spinning .refresh-icon {
-            animation: spin 0.8s linear infinite;
-        }
-
-        .no-data-cell {
-            text-align: center;
-            color: var(--text-muted);
-            padding: 30px;
-            font-style: italic;
-        }
-
-        /* Champion highlight */
-        .champion-row {
-            background: linear-gradient(90deg, rgba(255, 215, 0, 0.08), transparent);
-        }
-
-        .champion-badge {
-            display: inline-block;
-            margin-left: 6px;
-            font-size: 0.75rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Bảng Điểm Pickleball</title>
+
+<style>
+body {
+    font-family: Arial;
+    margin: 0;
+    background: #0f172a;
+    color: white;
+}
+.container { padding: 10px; }
+
+h2 {
+    text-align: center;
+    color: #38bdf8;
+    margin: 15px 0;
+}
+
+.table-box {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1e293b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #334155;
+}
+
+th { background: #0284c7; }
+
+tr:nth-child(even) { background: #0f172a; }
+
+</style>
 </head>
+
 <body>
-    <div class="bg-pattern"></div>
-    
-    <div class="container">
-        <header>
-            <div class="logo-area">
-                <div class="logo-icon">🏓</div>
-                <div>
-                    <h1>🏆 BẢNG ĐIỂM PICKLEBALL</h1>
-                    <div class="subtitle">Giải đấu Pickleball — Kết quả thi đấu</div>
-                </div>
-            </div>
-            <div class="last-updated">
-                <span class="dot"></span>
-                <span id="updateTime">Đang tải dữ liệu...</span>
-            </div>
-        </header>
 
-        <div class="tabs-wrapper">
-            <div class="tabs" id="tabsContainer">
-                <button class="tab active" data-tab="groups">📋 Bảng Nhóm</button>
-                <button class="tab" data-tab="vongbang">🏟️ Vòng Bảng</button>
-                <button class="tab" data-tab="tuket">⚡ Tứ Kết</button>
-                <button class="tab" data-tab="banket">🔥 Bán Kết</button>
-                <button class="tab" data-tab="chungket">👑 Chung Kết</button>
-            </div>
-        </div>
+<div class="container">
 
-        <div class="content-area" id="contentArea">
-            <!-- Dynamic content -->
-        </div>
-    </div>
+<h2>🏆 Bảng A</h2>
+<div class="table-box"><table id="A"></table></div>
 
-    <button class="refresh-btn" id="refreshBtn" title="Làm mới dữ liệu">
-        <span class="refresh-icon">🔄</span>
-    </button>
+<h2>🏆 Bảng B</h2>
+<div class="table-box"><table id="B"></table></div>
 
-    <script>
-        const SHEET_ID = '11R0QRVS5-tyNEXHFJh8FJ5KxlfpCWvUQkDByaIiPPGU';
-        const BASE_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+<h2>🏆 Bảng C</h2>
+<div class="table-box"><table id="C"></table></div>
 
-        const sheetNames = {
-            'A': 'A',
-            'B': 'B',
-            'C': 'C',
-            'Vot': 'Vot'
-        };
+<h2>🏆 Bảng Vớt</h2>
+<div class="table-box"><table id="VOT"></table></div>
 
-        // State
-        let allData = {};
-        let isLoading = false;
+<h2>📊 Vòng bảng</h2>
+<div class="table-box"><table id="BANG"></table></div>
 
-        // Tab switching
-        const tabsContainer = document.getElementById('tabsContainer');
-        const contentArea = document.getElementById('contentArea');
-        const refreshBtn = document.getElementById('refreshBtn');
+<h2>🔥 Tứ kết</h2>
+<div class="table-box"><table id="TK"></table></div>
 
-        tabsContainer.addEventListener('click', (e) => {
-            const tab = e.target.closest('.tab');
-            if (!tab) return;
-            
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            
-            const tabId = tab.dataset.tab;
-            renderTab(tabId);
+<h2>🔥 Bán kết</h2>
+<div class="table-box"><table id="BK"></table></div>
+
+<h2>🏆 Chung kết</h2>
+<div class="table-box"><table id="CK"></table></div>
+
+</div>
+
+<script>
+
+const sheetID = "11R0QRVS5-tyNEXHFJh8FJ5KxlfpCWvUQkDByaIiPPGU";
+
+function loadRange(sheet, range, tableId) {
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?sheet=${sheet}&range=${range}`;
+
+    fetch(url)
+    .then(res => res.text())
+    .then(rep => {
+        const json = JSON.parse(rep.substr(47).slice(0, -2));
+        const table = document.getElementById(tableId);
+        table.innerHTML = "";
+
+        const cols = json.table.cols;
+        const rows = json.table.rows;
+
+        // header
+        let header = "<tr>";
+        cols.forEach(col => {
+            header += `<th>${col.label || ""}</th>`;
         });
+        header += "</tr>";
+        table.innerHTML += header;
 
-        refreshBtn.addEventListener('click', () => {
-            refreshBtn.classList.add('spinning');
-            fetchAllData().then(() => {
-                setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
-                const activeTab = document.querySelector('.tab.active');
-                if (activeTab) renderTab(activeTab.dataset.tab);
-            }).catch(() => {
-                setTimeout(() => refreshBtn.classList.remove('spinning'), 500);
+        // data
+        rows.forEach(r => {
+            let tr = "<tr>";
+            r.c.forEach(c => {
+                tr += `<td>${c ? c.v : ""}</td>`;
             });
+            tr += "</tr>";
+            table.innerHTML += tr;
         });
+    })
+    .catch(err => {
+        document.getElementById(tableId).innerHTML = "<tr><td>Lỗi load dữ liệu</td></tr>";
+    });
+}
 
-        function showLoading() {
-            contentArea.innerHTML = `
-                <div class="loading-container">
-                    <div class="spinner"></div>
-                    <div class="loading-text">Đang tải dữ liệu từ Google Sheets...</div>
-                </div>
-            `;
-        }
+// ===== LOAD ĐÚNG RANGE =====
 
-        function showError(msg) {
-            contentArea.innerHTML = `
-                <div class="error-container">
-                    <div class="error-icon">⚠️</div>
-                    <h3>Không thể tải dữ liệu</h3>
-                    <p>${msg}</p>
-                    <button class="retry-btn" onclick="fetchAllData().then(() => renderTab('groups'))">Thử lại</button>
-                </div>
-            `;
-        }
+// Bảng A/B/C/Vot (F2:H5)
+loadRange("A", "F2:H5", "A");
+loadRange("B", "F2:H5", "B");
+loadRange("C", "F2:H5", "C");
+loadRange("Vot", "F2:H5", "VOT");
 
-        // Fetch data from Google Sheets using gviz
-        async function fetchSheetData(sheetName, range) {
-            const url = `${BASE_URL}&sheet=${encodeURIComponent(sheetName)}&range=${encodeURIComponent(range)}`;
-            const response = await fetch(url);
-            const text = await response.text();
-            // Parse the JSONP-like response
-            const jsonStr = text.replace(/^google\.visualization\.Query\.setResponse\(/, '').replace(/\);?$/, '');
-            const json = JSON.parse(jsonStr);
-            return json.table;
-        }
+// Vòng bảng
+loadRange("bang", "A1:G26", "BANG");
 
-        async function fetchAllData() {
-            isLoading = true;
-            const promises = [];
-            
-            // Group tables: A, B, C, Vot — range F2:H5
-            ['A', 'B', 'C', 'Vot'].forEach(name => {
-                promises.push(
-                    fetchSheetData(name, 'F2:H5').then(data => ({ key: name, data })).catch(err => ({ key: name, error: err }))
-                );
-            });
+// Tứ kết
+loadRange("1.8", "A2:E12", "TK");
 
-            // Vòng bảng: bang — A1:G26
-            promises.push(
-                fetchSheetData('bang', 'A1:G26').then(data => ({ key: 'bang', data })).catch(err => ({ key: 'bang', error: err }))
-            );
+// Bán kết
+loadRange("bk", "A3:D7", "BK");
 
-            // Tứ kết: 1.8 — A2:E12
-            promises.push(
-                fetchSheetData('1.8', 'A2:E12').then(data => ({ key: '1.8', data })).catch(err => ({ key: '1.8', error: err }))
-            );
+// Chung kết
+loadRange("ck", "A3:C4", "CK");
 
-            // Bán kết: bk — A3:D7
-            promises.push(
-                fetchSheetData('bk', 'A3:D7').then(data => ({ key: 'bk', data })).catch(err => ({ key: 'bk', error: err }))
-            );
+</script>
 
-            // Chung kết: ck — A3:C4
-            promises.push(
-                fetchSheetData('ck', 'A3:C4').then(data => ({ key: 'ck', data })).catch(err => ({ key: 'ck', error: err }))
-            );
-
-            const results = await Promise.all(promises);
-            
-            results.forEach(r => {
-                if (r.error) {
-                    console.warn(`Error loading sheet "${r.key}":`, r.error);
-                } else {
-                    allData[r.key] = r.data;
-                }
-            });
-
-            isLoading = false;
-            document.getElementById('updateTime').textContent = `Cập nhật: ${new Date().toLocaleString('vi-VN')}`;
-        }
-
-        function getCellValue(row, colIndex) {
-            if (!row || !row.c || !row.c[colIndex]) return '';
-            const cell = row.c[colIndex];
-            if (cell.f) return cell.f;
-            if (cell.v !== null && cell.v !== undefined) return String(cell.v);
-            return '';
-        }
-
-        function parseTableData(table) {
-            if (!table || !table.rows) return { headers: [], rows: [] };
-            
-            const headers = [];
-            if (table.cols) {
-                table.cols.forEach(col => {
-                    headers.push(col.label || '');
-                });
-            }
-
-            const rows = [];
-            table.rows.forEach(row => {
-                const cells = [];
-                if (row.c) {
-                    for (let i = 0; i < table.cols.length; i++) {
-                        cells.push(getCellValue(row, i));
-                    }
-                }
-                rows.push(cells);
-            });
-
-            return { headers, rows };
-        }
-
-        // Render group tables (A, B, C, Vot)
-        function renderGroupTable(sheetKey, title) {
-            const rawData = allData[sheetKey];
-            if (!rawData) {
-                return `<div class="group-card">
-                    <div class="group-card-header">
-                        <span class="group-badge">${title}</span>
-                        <h3>Bảng ${title}</h3>
-                    </div>
-                    <div class="no-data-cell">Không có dữ liệu</div>
-                </div>`;
-            }
-
-            const parsed = parseTableData(rawData);
-            // Data structure: column 0 = team name, column 1 = points, column 2 = coefficient
-            let html = `<div class="group-card">
-                <div class="group-card-header">
-                    <span class="group-badge">${title}</span>
-                    <h3>Bảng ${title}</h3>
-                </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width:50px;text-align:center;">#</th>
-                            <th>Đội</th>
-                            <th style="text-align:center;">Điểm</th>
-                            <th style="text-align:center;">Hệ số</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
-
-            parsed.rows.forEach((row, idx) => {
-                const teamName = row[0] || '';
-                const points = row[1] || '';
-                const coef = row[2] || '';
-                const rank = idx + 1;
-                const rankClass = rank <= 3 ? `rank-${rank}` : '';
-                const isChampion = rank === 1 ? ' champion-row' : '';
-
-                html += `<tr class="${isChampion}">
-                    <td class="rank-cell ${rankClass}">${rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : rank}</td>
-                    <td class="team-name">${teamName}</td>
-                    <td class="points-cell">${points}</td>
-                    <td class="coef-cell">${coef}</td>
-                </tr>`;
-            });
-
-            html += `</tbody></table></div>`;
-            return html;
-        }
-
-        // Render general table (for bang sheet)
-        function renderGeneralTable(sheetKey, title) {
-            const rawData = allData[sheetKey];
-            if (!rawData) {
-                return `<div class="table-container">
-                    <div class="no-data-cell">Không có dữ liệu cho ${title}</div>
-                </div>`;
-            }
-
-            const parsed = parseTableData(rawData);
-            if (parsed.headers.length === 0 && parsed.rows.length === 0) {
-                return `<div class="table-container">
-                    <div class="no-data-cell">Không có dữ liệu cho ${title}</div>
-                </div>`;
-            }
-
-            let html = `<div class="table-container">
-                <div class="section-title">
-                    <div class="section-icon">🏟️</div>
-                    <h2>${title}</h2>
-                </div>
-                <table>
-                    <thead><tr>`;
-
-            parsed.headers.forEach((h, i) => {
-                html += `<th>${h || `Cột ${i+1}`}</th>`;
-            });
-
-            html += `</tr></thead><tbody>`;
-
-            parsed.rows.forEach(row => {
-                html += '<tr>';
-                row.forEach((cell, i) => {
-                    html += `<td>${cell}</td>`;
-                });
-                html += '</tr>';
-            });
-
-            html += `</tbody></table></div>`;
-            return html;
-        }
-
-        // Render bracket (for 1.8, bk, ck sheets)
-        function renderBracket(sheetKey, title) {
-            const rawData = allData[sheetKey];
-            if (!rawData) {
-                return `<div class="table-container">
-                    <div class="section-title">
-                        <div class="section-icon">🏆</div>
-                        <h2>${title}</h2>
-                    </div>
-                    <div class="no-data-cell">Không có dữ liệu</div>
-                </div>`;
-            }
-
-            const parsed = parseTableData(rawData);
-            if (parsed.rows.length === 0) {
-                return `<div class="table-container">
-                    <div class="section-title">
-                        <div class="section-icon">🏆</div>
-                        <h2>${title}</h2>
-                    </div>
-                    <div class="no-data-cell">Không có dữ liệu</div>
-                </div>`;
-            }
-
-            // Determine bracket structure based on sheet
-            // For "1.8" (quarter-finals): A2:E12 — likely has match info with team1, score1, team2, score2
-            // For "bk" (semi-finals): A3:D7
-            // For "ck" (finals): A3:C4
-
-            let html = `<div class="table-container">
-                <div class="section-title">
-                    <div class="section-icon">🏆</div>
-                    <h2>${title}</h2>
-                </div>
-                <div class="bracket-container">
-                    <div class="bracket-round">`;
-
-            // Parse rows as matches
-            let matchCount = 0;
-            parsed.rows.forEach(row => {
-                const col0 = (row[0] || '').trim();
-                const col1 = (row[1] || '').trim();
-                const col2 = (row[2] || '').trim();
-                const col3 = (row[3] || '').trim();
-                const col4 = (row[4] || '').trim();
-
-                // Skip empty rows
-                if (!col0 && !col1 && !col2 && !col3 && !col4) return;
-
-                // Check if this row looks like a match header or label
-                if (col0 && !col1 && !col2 && !col3 && !col4) {
-                    // Likely a match label/round header
-                    html += `<div class="bracket-match">
-                        <div class="bracket-match-label">${col0}</div>
-                    </div>`;
-                    return;
-                }
-
-                // Try to detect match pairs
-                // Pattern: team1 | score1 | score2 | team2 | (optional extra)
-                // Or: team1 | score1 | team2 | score2
-                let team1, score1, team2, score2;
-
-                if (col1 && col2 && col3) {
-                    // Pattern A: team1 | score1 | score2 | team2
-                    team1 = col0;
-                    score1 = col1;
-                    score2 = col2;
-                    team2 = col3;
-                } else if (col1 && col2) {
-                    // Pattern B: team1 | score1 | team2
-                    team1 = col0;
-                    score1 = col1;
-                    team2 = col2;
-                    score2 = '';
-                } else {
-                    // Just show as single row
-                    html += `<div class="bracket-match">
-                        <div class="bracket-team">
-                            <span class="bracket-name" style="flex:none;">${col0}</span>
-                        </div>
-                    </div>`;
-                    return;
-                }
-
-                matchCount++;
-                const winnerClass1 = (score1 && score2 && parseInt(score1) > parseInt(score2)) ? 'winner' : '';
-                const winnerClass2 = (score1 && score2 && parseInt(score2) > parseInt(score1)) ? 'winner' : '';
-
-                html += `<div class="bracket-match">
-                    <div class="bracket-match-label">Trận ${matchCount}</div>
-                    <div class="bracket-team ${winnerClass1}">
-                        <span class="bracket-seed">${matchCount * 2 - 1}</span>
-                        <span class="bracket-name">${team1}</span>
-                        <span class="bracket-score">${score1}</span>
-                    </div>
-                    <div class="bracket-team ${winnerClass2}">
-                        <span class="bracket-seed">${matchCount * 2}</span>
-                        <span class="bracket-name">${team2}</span>
-                        <span class="bracket-score">${score2}</span>
-                    </div>
-                </div>`;
-            });
-
-            html += `</div></div></div>`;
-            return html;
-        }
-
-        // Tab rendering
-        function renderTab(tabId) {
-            if (isLoading || Object.keys(allData).length === 0) {
-                showLoading();
-                return;
-            }
-
-            let html = '';
-
-            switch(tabId) {
-                case 'groups':
-                    html += `<div class="section-title">
-                        <div class="section-icon">📋</div>
-                        <h2>Bảng Xếp Hạng Nhóm</h2>
-                    </div>`;
-                    html += `<div class="groups-grid">`;
-                    html += renderGroupTable('A', 'A');
-                    html += renderGroupTable('B', 'B');
-                    html += renderGroupTable('C', 'C');
-                    html += renderGroupTable('Vot', 'Vớt');
-                    html += `</div>`;
-                    break;
-
-                case 'vongbang':
-                    html += renderGeneralTable('bang', '🏟️ Thi Đấu Vòng Bảng');
-                    break;
-
-                case 'tuket':
-                    html += renderBracket('1.8', '⚡ Vòng Tứ Kết');
-                    break;
-
-                case 'banket':
-                    html += renderBracket('bk', '🔥 Vòng Bán Kết');
-                    break;
-
-                case 'chungket':
-                    html += renderBracket('ck', '👑 Vòng Chung Kết');
-                    break;
-            }
-
-            contentArea.innerHTML = html;
-        }
-
-        // Initialize
-        async function init() {
-            showLoading();
-            try {
-                await fetchAllData();
-                const activeTab = document.querySelector('.tab.active');
-                renderTab(activeTab ? activeTab.dataset.tab : 'groups');
-            } catch (err) {
-                console.error('Failed to load data:', err);
-                showError('Không thể kết nối đến Google Sheets. Vui lòng kiểm tra kết nối mạng và thử lại.');
-            }
-        }
-
-        init();
-    </script>
 </body>
 </html>
-
