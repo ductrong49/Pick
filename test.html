@@ -5,164 +5,155 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Nhập Điểm Thi Đấu</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; background: #f5f5f5; padding-bottom: 20px; }
-
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    background: #f1f5f9;
+    color: #0f172a;
+    padding-bottom: 24px;
+}
 .header {
-    background: linear-gradient(135deg, #0f172a, #1e40af);
+    background: linear-gradient(135deg, #1e3a8a, #3b82f6);
     color: white;
     padding: 20px 16px;
     text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(37,99,235,0.25);
 }
-.header h1 { font-size: 1.4rem; font-weight: 700; }
-.header p { font-size: 0.85rem; opacity: 0.85; margin-top: 4px; }
+.header h1 { font-size: 1.3rem; font-weight: 800; }
+.header p { font-size: 0.8rem; opacity: 0.9; margin-top: 4px; }
 
-.container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 14px;
-    max-width: 900px;
-    margin: 0 auto;
-}
+.container { padding: 14px; max-width: 800px; margin: 0 auto; }
 
-.box {
+.group-card {
     background: white;
-    border-radius: 12px;
-    padding: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    margin-bottom: 18px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
 }
-
-h3 {
+.group-header {
+    padding: 10px 16px;
+    font-weight: 800;
+    color: white;
     text-align: center;
-    margin-bottom: 12px;
-    font-size: 1.05rem;
-    color: #1e40af;
-    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
 }
 
 .match-row {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    padding: 12px 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+.match-row:last-child { border-bottom: none; }
+
+.teams-display {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 6px;
-    padding: 8px 0;
-    border-bottom: 1px solid #f3f4f6;
-}
-.match-row:last-of-type { border-bottom: none; }
-
-.team {
-    font-size: 0.85rem;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
     font-weight: 600;
-    color: #1f2937;
-    word-break: break-word;
-    line-height: 1.2;
 }
-.team:first-child { text-align: right; }
-.team:last-child { text-align: left; }
+.team-name { flex: 1; line-height: 1.2; }
+.team-left { text-align: left; color: #1e40af; }
+.team-right { text-align: right; color: #be123c; }
+.vs { margin: 0 6px; font-size: 0.75rem; color: #94a3b8; font-weight: 700; }
 
-.score-area {
+.inputs-wrapper {
     display: flex;
     align-items: center;
-    gap: 4px;
     justify-content: center;
-    min-width: 80px;
+    gap: 8px;
+    margin-bottom: 8px;
 }
-
-.score-input {
-    width: 32px;
-    font-size: 0.95rem;
+.score-in {
+    width: 38px;
+    height: 36px;
+    font-size: 1.1rem;
+    font-weight: 800;
     text-align: center;
-    padding: 6px 4px;
-    border: 2px solid #d1d5db;
-    border-radius: 6px;
-    background: #f9fafb;
-    font-weight: 700;
-    color: #111827;
+    border: 2px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
     transition: all 0.2s;
 }
-.score-input:focus {
+.score-in:focus {
     outline: none;
     border-color: #3b82f6;
     background: #eff6ff;
-    box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
 }
-.score-input.has-value {
-    border-color: #10b981;
-    background: #ecfdf5;
-}
+.score-in.filled { border-color: #10b981; background: #ecfdf5; }
 
-.score-divider {
-    font-weight: 800;
-    color: #6b7280;
-    font-size: 0.9rem;
-}
+.score-sep { font-weight: 800; color: #64748b; }
 
 .save-btn {
     width: 100%;
-    margin-top: 6px;
-    padding: 7px;
+    padding: 9px;
     border: none;
     border-radius: 8px;
     background: #10b981;
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
-.save-btn:hover { background: #059669; transform: translateY(-1px); }
-.save-btn:active { transform: scale(0.97); }
-.save-btn.saving { background: #9ca3af; cursor: not-allowed; }
-.save-btn.saved { background: #1d4ed8; }
+.save-btn:hover { background: #059669; }
+.save-btn:active { transform: scale(0.98); }
+.save-btn.saving { background: #94a3b8; pointer-events: none; }
+.save-btn.saved { background: #3b82f6; }
 
-.current-score {
+.status-text {
     text-align: center;
-    font-size: 0.7rem;
-    color: #6b7280;
-    margin-top: 3px;
-}
-.current-score span {
-    font-weight: 700;
-    color: #10b981;
+    font-size: 0.72rem;
+    color: #64748b;
+    margin-top: 6px;
+    min-height: 16px;
 }
 
 .toast {
     position: fixed;
     bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%) translateY(30px);
+    left: 16px;
+    right: 16px;
     background: #0f172a;
     color: white;
-    padding: 12px 20px;
+    padding: 12px 16px;
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: 0.88rem;
     font-weight: 600;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    opacity: 0;
-    transition: all 0.3s ease;
-    z-index: 999;
-    pointer-events: none;
     text-align: center;
-    max-width: 90%;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translateY(15px);
+    transition: all 0.25s ease;
+    z-index: 9999;
+    pointer-events: none;
 }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.toast.show { opacity: 1; transform: translateY(0); }
 .toast.success { background: #059669; }
 .toast.error { background: #dc2626; }
 
-.loading { text-align: center; padding: 20px; color: #6b7280; font-size: 0.9rem; }
+.loading { text-align: center; padding: 30px 16px; color: #64748b; }
+.spinner {
+    width: 28px; height: 28px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #3b82f6;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-@media (max-width: 600px) {
-    .container {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 10px;
-    }
-    .team { font-size: 0.8rem; }
-    .score-input { width: 28px; font-size: 0.85rem; padding: 5px 3px; }
-    .score-area { min-width: 70px; }
+@media (max-width: 400px) {
+    .teams-display { font-size: 0.82rem; }
+    .score-in { width: 34px; height: 34px; font-size: 1rem; }
 }
 </style>
 </head>
@@ -180,145 +171,142 @@ h3 {
 const SHEET_ID = "1nb9q4tDya5jYbXOwLowxu1XH3-HHcPnCP4kNKXaymLI";
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbykQOvD-swl0yZ5Wq92c4PVXrP0A49dvgU1rkOUt8IUR_2Yaiv8CAVZWaXqUBvIVxi8hg/exec";
 
-const configs = [
-  { name:"A", startRow:2, saveStart:3, matchCount:6 },
-  { name:"B", startRow:11, saveStart:12, matchCount:6 },
-  { name:"C", startRow:20, saveStart:21, matchCount:6 },
-  { name:"D", startRow:29, saveStart:30, matchCount:6 },
+const GROUPS = [
+  { name: "A", color: "#2563eb", range: "B2:D8", saveStart: 3 },
+  { name: "B", color: "#dc2626", range: "B11:D17", saveStart: 12 },
+  { name: "C", color: "#059669", range: "B20:D26", saveStart: 21 },
+  { name: "D", color: "#d97706", range: "B29:D35", saveStart: 30 }
 ];
 
 function showToast(msg, type) {
-    var t = document.getElementById("toast");
+    const t = document.getElementById("toast");
     t.textContent = msg;
-    t.className = "toast " + (type || "success") + " show";
-    setTimeout(function(){ t.classList.remove("show"); }, 2500);
+    t.className = `toast ${type || "success"} show`;
+    setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-async function loadData() {
-    var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/gviz/tq?tqx=out:json&sheet=bang";
-    var res = await fetch(url);
-    var text = await res.text();
-    var json = JSON.parse(text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1));
+async function fetchGroup(range) {
+    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=bang&range=${encodeURIComponent(range)}`;
+    const res = await fetch(url);
+    const txt = await res.text();
+    const json = JSON.parse(txt.substring(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
     return json.table.rows;
 }
 
-function createBox(title, allRows, cfg) {
-    // Skip header row (first row), take only match rows
-    var matchRows = [];
-    for (var i = 1; i < allRows.length && i < cfg.matchCount + 1; i++) {
-        matchRows.push(allRows[i]);
+function renderMatch(rowData, saveRow, groupName, groupColor) {
+    const c = rowData.c;
+    const t1 = (c[0] ? (c[0].f || c[0].v || "") : "");
+    const t2 = (c[1] ? (c[1].f || c[1].v || "") : "");
+    const current = (c[2] ? String(c[2].v || "") : "");
+
+    let v1 = "", v2 = "";
+    if (current && current.includes("-")) {
+        const parts = current.split("-");
+        v1 = parts[0] || "";
+        v2 = parts[1] || "";
     }
 
-    var html = '<div class="box"><h3>Bảng ' + title + '</h3>';
-
-    for (var i = 0; i < matchRows.length; i++) {
-        var r = matchRows[i];
-        var team1 = r.c[0] ? (r.c[0].v || r.c[0].f || "") : "";
-        var team2 = r.c[1] ? (r.c[1].v || r.c[1].f || "") : "";
-        var scoreStr = r.c[2] ? String(r.c[2].v || "") : "";
-
-        var saveRow = cfg.saveStart + i;
-        var val1 = "", val2 = "";
-
-        if (scoreStr && scoreStr.indexOf("-") !== -1) {
-            var parts = scoreStr.split("-");
-            val1 = parts[0] || "";
-            val2 = parts[1] || "";
-        }
-
-        html += '<div class="match-row">';
-        html += '<div class="team">' + team1 + '</div>';
-        html += '<div class="score-area">';
-        html += '<input id="a' + saveRow + '" class="score-input' + (val1 ? ' has-value' : '') + '" type="tel" value="' + val1 + '" maxlength="2" placeholder="0">';
-        html += '<span class="score-divider">-</span>';
-        html += '<input id="b' + saveRow + '" class="score-input' + (val2 ? ' has-value' : '') + '" type="tel" value="' + val2 + '" maxlength="2" placeholder="0">';
-        html += '</div>';
-        html += '<div class="team">' + team2 + '</div>';
-        html += '</div>';
-
-        html += '<button class="save-btn" id="btn' + saveRow + '" onclick="saveScore(' + saveRow + ')">💾 Lưu ' + title + (i + 1) + '</button>';
-
-        if (scoreStr) {
-            html += '<div class="current-score">Điểm: <span>' + scoreStr + '</span></div>';
-        }
-    }
-
-    html += '</div>';
-    return html;
+    return `
+    <div class="match-row" data-row="${saveRow}">
+        <div class="teams-display">
+            <span class="team-name team-left">${t1}</span>
+            <span class="vs">VS</span>
+            <span class="team-name team-right">${t2}</span>
+        </div>
+        <div class="inputs-wrapper">
+            <input type="tel" data-row="${saveRow}" data-side="1" class="score-in ${v1?'filled':''}" value="${v1}" maxlength="2" inputmode="numeric" placeholder="0">
+            <span class="score-sep">-</span>
+            <input type="tel" data-row="${saveRow}" data-side="2" class="score-in ${v2?'filled':''}" value="${v2}" maxlength="2" inputmode="numeric" placeholder="0">
+        </div>
+        <button class="save-btn" onclick="handleSave(${saveRow}, '${groupName}')">
+            💾 Lưu Bảng ${groupName}
+        </button>
+        ${current ? `<div class="status-text">Điểm hiện tại: <span style="color:${groupColor};font-weight:700">${current}</span></div>` : ''}
+    </div>`;
 }
 
-window.saveScore = async function(row) {
-    var aEl = document.getElementById("a" + row);
-    var bEl = document.getElementById("b" + row);
-    var btnEl = document.getElementById("btn" + row);
+window.handleSave = async function(row, groupName) {
+    const el1 = document.querySelector(`input[data-row="${row}"][data-side="1"]`);
+    const el2 = document.querySelector(`input[data-row="${row}"][data-side="2"]`);
+    const btn = document.querySelector(`.match-row[data-row="${row}"] .save-btn`);
 
-    var a = aEl.value.trim();
-    var b = bEl.value.trim();
+    const v1 = el1.value.trim();
+    const v2 = el2.value.trim();
 
-    if (a === "" || b === "") {
-        showToast("Nhập đủ 2 điểm!", "error");
+    if (!v1 || !v2) {
+        showToast("⚠️ Vui lòng nhập đủ 2 điểm!", "error");
         return;
     }
 
-    var value = a + "-" + b;
+    const scoreVal = `${v1}-${v2}`;
 
-    btnEl.classList.add("saving");
-    btnEl.textContent = "⏳ Đang lưu...";
+    btn.classList.add("saving");
+    btn.innerHTML = "⏳ Đang lưu...";
 
     try {
         await fetch(SCRIPT_URL, {
             method: "POST",
-            body: JSON.stringify({
-                range: "D" + row,
-                value: value
-            })
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify({ range: `D${row}`, value: scoreVal })
         });
 
-        btnEl.classList.remove("saving");
-        btnEl.classList.add("saved");
-        btnEl.textContent = "✅ Đã lưu";
+        el1.classList.add("filled");
+        el2.classList.add("filled");
 
-        aEl.classList.add("has-value");
-        bEl.classList.add("has-value");
+        btn.classList.remove("saving");
+        btn.classList.add("saved");
+        btn.innerHTML = "✅ Đã lưu D" + row;
 
-        var rowDiv = btnEl.previousElementSibling;
-        var csDiv = rowDiv ? rowDiv.parentElement.querySelector('.current-score') : null;
-        if (csDiv) {
-            csDiv.innerHTML = 'Điểm: <span>' + value + '</span>';
+        // Update status text
+        let statusEl = btn.nextElementSibling;
+        if (!statusEl || !statusEl.classList.contains("status-text")) {
+            const div = document.createElement("div");
+            div.className = "status-text";
+            btn.parentNode.appendChild(div);
+            statusEl = div;
         }
+        statusEl.innerHTML = `Đã lưu: <span style="font-weight:700">${scoreVal}</span>`;
 
-        showToast("Đã lưu " + value + " → D" + row, "success");
+        showToast(`✅ Lưu thành công ${scoreVal} → D${row}`, "success");
 
-        setTimeout(function(){
-            btnEl.classList.remove("saved");
-            btnEl.innerHTML = "💾 Lưu";
-        }, 2000);
+        setTimeout(() => {
+            btn.classList.remove("saved");
+            btn.innerHTML = `💾 Lưu Bảng ${groupName}`;
+        }, 1500);
 
     } catch(err) {
-        btnEl.classList.remove("saving");
-        btnEl.textContent = "❌ Lỗi";
-        showToast("Lỗi kết nối!", "error");
+        btn.classList.remove("saving");
+        btn.innerHTML = "❌ Lỗi kết nối";
+        showToast("❌ Không thể lưu dữ liệu", "error");
     }
 };
 
 async function init() {
-    var app = document.getElementById("app");
-    app.innerHTML = '<div style="grid-column:1/-1" class="loading">⏳ Đang tải dữ liệu...</div>';
+    const app = document.getElementById("app");
+    app.innerHTML = '<div class="loading"><div class="spinner"></div>Đang tải dữ liệu...</div>';
 
     try {
-        var allData = await loadData();
+        const promises = GROUPS.map(g => fetchGroup(g.range));
+        const results = await Promise.all(promises);
+
         app.innerHTML = "";
 
-        configs.forEach(function(cfg) {
-            // Slice to get rows for each table: từ startRow đến startRow+6 (7 dòng tổng, bỏ header còn 6 match)
-            var startIdx = cfg.startRow - 1;
-            var endIdx = startIdx + cfg.matchCount + 1;
-            var tableRows = allData.slice(startIdx, endIdx);
-
-            app.innerHTML += createBox(cfg.name, tableRows, cfg);
+        GROUPS.forEach((cfg, i) => {
+            const rows = results[i];
+            // Skip header (index 0). Indices 1-6 are matches for rows 3-8, 12-17, etc.
+            let html = `<div class="group-card"><div class="group-header" style="background:${cfg.color}">BẢNG ${cfg.name}</div>`;
+            
+            for (let j = 1; j <= 6 && j < rows.length; j++) {
+                const saveRow = cfg.saveStart + (j - 1);
+                html += renderMatch(rows[j], saveRow, cfg.name, cfg.color);
+            }
+            html += `</div>`;
+            app.innerHTML += html;
         });
+
     } catch(err) {
-        app.innerHTML = '<div style="grid-column:1/-1" class="loading" style="color:#dc2626">❌ Lỗi tải dữ liệu. Vui lòng thử lại.</div>';
+        app.innerHTML = `<div class="loading" style="color:#dc2626">❌ Lỗi tải dữ liệu<br>${err.message}</div>`;
     }
 }
 
